@@ -1,0 +1,22 @@
+ Your Conversation Log:
+You: Hi, I am chidimma
+AI: Hello, Chidimma! How can I assist you today?
+
+You: good monifgn 
+AI: Good morning! It looks like there might have been a small typo in your message, but no worries! How's your day going so far?
+
+You: not bad, tell me a joke
+AI: Of course! Here you go: 
+
+Why don't skeletons fight each other?
+
+They don't have the guts!
+
+You: do you always give same joke
+AI: I try to mix it up, but here's another one for you: 
+
+Why was the math book sad?
+
+Because it had too many problems!
+
+End of Conversation
