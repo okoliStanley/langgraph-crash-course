@@ -56,9 +56,9 @@ for path in file_paths:
                 {"role": "user", "content": f"Review the following code and suggest improvements:\n\n{content}"}
             ]
         )
-        suggestions = response['choices'][0]['message']['content']
-    except Exception as e:
         print(response.status_code)
+        suggestions = response['choices'][0]['message']['content']
+    except Exception as e:        
         print(f"❌ Failed to get LLM response for {filename}: {e}")
         continue
 
