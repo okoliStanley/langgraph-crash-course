@@ -13,17 +13,11 @@ jobs:
 
       - name: Get Modified files
         id: files
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const files = await github.rest.pulls.listFiles({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: github.event.pull_request.number
-            });
-            const modifiedFiles = files.data.map(f => f.filename)
-                  .filter(f => f.endsWith('.cs') || f.endsWith('.js') || f.endsWith('.py'));
-            core.setOutput("modifiedFiles", modifiedFiles.join(" "));
+        run: |
+          MODIFIED_FILES=$(gh pr view "${{ github.event.pull_request.number }}" --json files --jq '.files[].path' | grep -E '\.cs$|\.js$|\.py$' | tr '\n' ' ')
+          echo "modifiedFiles=$MODIFIED_FILES" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Python-setup
         uses: actions/setup-python@v4
