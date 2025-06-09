@@ -10,7 +10,6 @@ from pathlib import Path
 # Load GitHub username (passed from GitHub Actions as env)
 github_user = os.getenv("PR_USERNAME")
 openai.api_key = os.getenv("OPENAI_API_KEY")
-print(f"api key is {openai.api_key}")
 pr_number = os.getenv("PR_NUMBER")
 repo = os.getenv("GITHUB_REPOSITORY")
 github_token = os.getenv("GITHUB_TOKEN")
@@ -56,7 +55,7 @@ for path in file_paths:
                 {"role": "user", "content": f"Review the following code and suggest improvements:\n\n{content}"}
             ]
         )
-        print(response.status_code)
+
         suggestions = response['choices'][0]['message']['content']
     except Exception as e:        
         print(f"❌ Failed to get LLM response for {filename}: {e}")
