@@ -14,8 +14,11 @@ pr_number = os.getenv("PR_NUMBER")
 repo = os.getenv("GITHUB_REPOSITORY")
 github_token = os.getenv("GITHUB_TOKEN")
 
+script_dir = Path(__file__).resolve().parent
+email_file = script_dir / "user_email_map.json"
+
 # Load email mapping
-with open("user_email_map.json", "r") as f:
+with open(email_file, "r") as f:
     email_map = json.load(f)
 
 recipient_email = email_map.get(github_user)
