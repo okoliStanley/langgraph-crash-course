@@ -41,7 +41,7 @@ for path in file_paths:
     filename = os.path.basename(path)
 
     try:
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path.strip(), 'r', encoding='utf-8') as f:
             content = f.read()
     except Exception as e:
         print(f"⚠️ Could not read {filename}: {e}")
