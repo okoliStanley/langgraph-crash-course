@@ -38,7 +38,7 @@ jobs:
 
       - name: Run code Reviewer
         run: |
-          python scripts/pr-reviewer.py "${{ steps.files.outputs.modfiedFiles }}"
+          python scripts/pr-reviewer.py "${{ steps.files.outputs.modifiedFiles }}"
         env:
           OPENAI_API_KEY: ${{secrets.OPENAI_API_KEY}}
           PR_USERNAME: ${{ github.event.pull_request.user.login }}
