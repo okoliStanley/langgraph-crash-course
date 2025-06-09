@@ -4,7 +4,7 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, START, END
 from dotenv import load_dotenv # used to store secret like API key
 
-load_dotenv()
+#load_dotenv()
 
 class AgentState(TypedDict):
     messages: List[HumanMessage]
