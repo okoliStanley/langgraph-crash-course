@@ -15,6 +15,7 @@ jobs:
         id: files
         uses: actions/github-script@v6
         with:
+          result-encoding: string
           script: |
             const files = await github.rest.pulls.listFiles({
               owner: context.repo.owner,
@@ -23,8 +24,7 @@ jobs:
             });
             const modifiedFiles = files.data.map(f => f.filename)
                   .filter(f => f.endsWith('.cs') || f.endsWith('.js') || f.endsWith('.py'));
-            core.setOutput("modfiedFiles", modfiedFiles.join(" "));
-            result-encoding: string
+            core.setOutput("modifiedFiles", modifiedFiles.join(" "));
 
       - name: Python-setup
         uses: actions/setup-python@v4
