@@ -56,7 +56,11 @@ for path in file_paths:
             ]
         )
 
-        suggestions = response['choices'][0]['message']['content']
+        if response.choices and response.choices[0].message:
+            suggestions = response.choices[0].message.content
+        else:
+            raise ValueError("No suggestions returned from OpenAI.")
+
     except Exception as e:        
         print(f"❌ Failed to get LLM response for {filename}: {e}")
         continue
