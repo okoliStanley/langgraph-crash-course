@@ -15,7 +15,6 @@ jobs:
         id: files
         uses: actions/github-script@v6
         with:
-          result-encoding: string
           script: |
             const files = await github.rest.pulls.listFiles({
               owner: context.repo.owner,
