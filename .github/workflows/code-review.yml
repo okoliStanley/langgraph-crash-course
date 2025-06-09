@@ -19,7 +19,7 @@ jobs:
             const files = await github.rest.pulls.listFiles({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number
+              pull_number: github.event.pull_request.number
             });
             const modifiedFiles = files.data.map(f => f.filename)
                   .filter(f => f.endsWith('.cs') || f.endsWith('.js') || f.endsWith('.py'));
