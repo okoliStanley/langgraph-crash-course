@@ -1,10 +1,8 @@
 import os
 import sys
 import openai
-import smtplib
 import requests
 import json
-from email.message import EmailMessage
 from pathlib import Path
 
 # Load GitHub username (passed from GitHub Actions as env)
@@ -52,7 +50,7 @@ for path in file_paths:
             model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You're a senior software engineer optimizing code for readability and performance."},
-                {"role": "user", "content": f"Review the following code and suggest improvements:\n\n{content}"}
+                {"role": "user", "content": f"Review the following code and suggest improvements:\n\n{content}\n\n "}
             ]
         )
 
@@ -67,40 +65,19 @@ for path in file_paths:
 
     summary_output.append(f"## Suggestions for `{filename}`\n\n{suggestions}\n")
 
-    # post a seprate comment per file
-    body = f"### LLM Review for `{filename}`\n\n{suggestions}"
-    comment_url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
+    
+if summary_output:
+    full_body = (
+        f"## 🤖 LLM Code Review Summary for PR #{pr_number} by @{github_user}\n\n"
+        + "\n---\n".join(summary_output)
+    )
 
-    res = requests.post(comment_url, headers=headers, json={"body": body})
+    comment_url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
+    res = requests.post(comment_url, headers=headers, json={"body": full_body})
 
     if res.status_code == 201:
-        print(f"✅ Posted comment for {filename}")
+        print("✅ Posted consolidated LLM review comment.")
     else:
-        print(f"❌ Failed to post comment for {filename}. Status: {res.status_code}, Body: {res.text}")
-
-
-# Combine and format as email
-full_review = "\n\n".join(summary_output)
-
-# Send email
-def send_email(to_email, subject, body, sender="llm-bot@yourdomain.com"):
-    msg = EmailMessage()
-    msg.set_content(body)
-    msg["Subject"] = subject
-    msg["From"] = sender
-    msg["To"] = to_email
-
-    with smtplib.SMTP("smtp.yourprovider.com", 587) as smtp:
-        smtp.starttls()
-        smtp.login(os.environ["SMTP_USERNAME"], os.environ["SMTP_PASSWORD"])
-        smtp.send_message(msg)
-
-try:
-    send_email(
-        to_email=recipient_email,
-        subject=f"LLM Code Review for PR by {github_user}",
-        body=full_review
-    )
-    print(f"✅ Email sent to {recipient_email}")
-except Exception as e:
-    print(f"❌ Failed to send email: {e}")
+        print(f"❌ Failed to post consolidated comment. Status: {res.status_code}, Body: {res.text}")
+else:
+    print("ℹ️ No suggestions to post.")
